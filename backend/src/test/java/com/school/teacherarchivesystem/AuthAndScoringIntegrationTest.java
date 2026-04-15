@@ -77,7 +77,7 @@ class AuthAndScoringIntegrationTest {
                 .andExpect(status().isOk());
 
         ScoringRequest scoringRequest = new ScoringRequest();
-        scoringRequest.setTemplateId(1L);
+        scoringRequest.setTemplateId(2L);
         mockMvc.perform(post("/evaluations/run")
                         .header("Authorization", "Bearer " + adminToken)
                         .contentType(MediaType.APPLICATION_JSON)
