@@ -1,0 +1,11 @@
+package com.school.teacherarchivesystem.dto.archive;
+
+public class ArchiveReviewRequest {
+    private Boolean approved;
+    private String reviewComment;
+
+    public Boolean getApproved() { return approved; }
+    public void setApproved(Boolean approved) { this.approved = approved; }
+    public String getReviewComment() { return reviewComment; }
+    public void setReviewComment(String reviewComment) { this.reviewComment = reviewComment; }
+}
