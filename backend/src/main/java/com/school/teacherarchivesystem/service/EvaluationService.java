@@ -11,6 +11,7 @@ import com.school.teacherarchivesystem.enums.ArchiveType;
 import com.school.teacherarchivesystem.enums.UserRole;
 import com.school.teacherarchivesystem.enums.UserStatus;
 import com.school.teacherarchivesystem.repository.*;
+import com.school.teacherarchivesystem.util.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -104,11 +105,17 @@ public class EvaluationService {
     }
 
     public List<EvaluationResult> listResults(Long templateId) {
-        if (templateId != null) {
-            return resultRepository.findByTemplateIdOrderByRankingNoAsc(templateId);
+        Long resolvedTemplateId = templateId;
+        if (resolvedTemplateId == null) {
+            EvaluationTemplate active = templateRepository.findByActiveTrue()
+                    .orElseThrow(() -> new BusinessException("暂无已生效模板"));
+            resolvedTemplateId = active.getId();
         }
-        EvaluationTemplate active = templateRepository.findByActiveTrue().orElseThrow(() -> new BusinessException("暂无已生效模板"));
-        return resultRepository.findByTemplateIdOrderByRankingNoAsc(active.getId());
+        if (SecurityUtils.isAdmin()) {
+            return resultRepository.findByTemplateIdOrderByRankingNoAsc(resolvedTemplateId);
+        }
+        Long teacherId = SecurityUtils.currentUser().getUserId();
+        return resultRepository.findByTemplateIdAndTeacherIdOrderByRankingNoAsc(resolvedTemplateId, teacherId);
     }
 
     @Transactional

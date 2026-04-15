@@ -44,26 +44,46 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import http from '../api/http'
 
 const router = useRouter()
 const isAdmin = computed(() => localStorage.getItem('role') === 'ADMIN')
+const summary = ref({})
+const myScore = ref(null)
+
 const metrics = computed(() => {
   if (isAdmin.value) {
     return [
-      { label: '待审核档案', value: '12', tip: '优先处理最近 3 天新提交材料' },
-      { label: '本月评分任务', value: '3', tip: '请核对模板是否已生效' },
-      { label: '异常数据', value: '2', tip: '导出前请先修正汇总错误' },
+      { label: '待审核档案', value: summary.value.pending ?? '-', tip: '优先处理最近 3 天新提交材料' },
+      { label: '已通过档案', value: summary.value.approved ?? '-', tip: '已完成审核的有效材料' },
+      { label: '档案总数', value: summary.value.all ?? '-', tip: '含待审核、已通过、已退回' },
       { label: '最近备份', value: '今日 02:00', tip: '建议重大操作前手动备份' },
     ]
   }
   return [
-    { label: '我的档案数', value: '8', tip: '建议补齐近一年教科研材料' },
-    { label: '待审核', value: '2', tip: '管理员审核后会显示结果' },
-    { label: '本学年得分', value: '86.5', tip: '按当前有效模板自动汇总' },
+    { label: '我的档案数', value: summary.value.mine ?? '-', tip: '建议补齐近一年教科研材料' },
+    { label: '待审核', value: summary.value.pending ?? '-', tip: '管理员审核后会显示结果' },
+    { label: '本学年得分', value: myScore.value ?? '-', tip: '按当前有效模板自动汇总' },
     { label: '最近更新', value: '今天', tip: '请及时完善个人信息' },
   ]
+})
+
+onMounted(async () => {
+  try {
+    const res = await http.get('/dashboard/summary')
+    summary.value = res.data || {}
+  } catch (_) {}
+  if (!isAdmin.value) {
+    try {
+      const res = await http.get('/evaluations/results')
+      const list = res.data || []
+      const userId = Number(localStorage.getItem('userId'))
+      const mine = list.find((r) => r.teacher?.id === userId)
+      if (mine) myScore.value = mine.totalScore
+    } catch (_) {}
+  }
 })
 
 const go = (path) => router.push(path)

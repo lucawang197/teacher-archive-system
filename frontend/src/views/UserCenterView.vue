@@ -90,8 +90,8 @@ const editingId = ref(null)
 const editor = reactive({ username: '', realName: '', teacherNo: '', subjectName: '', jobTitle: '', phone: '', email: '', initialPassword: '123456' })
 
 const loadRows = async () => {
-  const res = await http.get('/users/teachers', { params: { page: 0, size: 100 } })
-  rows.value = res.data.content || []
+  const res = await http.get('/users/teachers')
+  rows.value = res.data || []
 }
 
 const resetEditor = () => {
@@ -142,8 +142,7 @@ const submitEditor = async () => {
       jobTitle: editor.jobTitle,
       phone: editor.phone,
       email: editor.email,
-      role: 'TEACHER',
-      initialPassword: editor.initialPassword,
+      password: editor.initialPassword,
     })
     ElMessage.success('用户创建成功')
   }
@@ -152,9 +151,9 @@ const submitEditor = async () => {
 }
 
 const toggleStatus = async (row) => {
-  const targetStatus = row.status === 'ENABLED' ? 'DISABLED' : 'ENABLED'
-  await http.put(`/users/${row.id}`, { status: targetStatus })
-  ElMessage.success(targetStatus === 'ENABLED' ? '用户已启用' : '用户已禁用')
+  const enable = row.status !== 'ENABLED'
+  await http.put(`/users/${row.id}`, { enabled: enable })
+  ElMessage.success(enable ? '用户已启用' : '用户已禁用')
   await loadRows()
 }
 

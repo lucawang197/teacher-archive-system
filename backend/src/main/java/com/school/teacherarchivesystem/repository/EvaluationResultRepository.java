@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface EvaluationResultRepository extends JpaRepository<EvaluationResult, Long> {
     List<EvaluationResult> findByTemplateIdOrderByRankingNoAsc(Long templateId);
+    List<EvaluationResult> findByTemplateIdAndTeacherIdOrderByRankingNoAsc(Long templateId, Long teacherId);
     void deleteByTemplateId(Long templateId);
 }

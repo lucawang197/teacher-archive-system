@@ -22,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -147,6 +149,35 @@ public class ArchiveService {
                         cb.isFalse(root.get("deleted"))
                 )).stream().count()
         );
+    }
+
+    public List<Map<String, Object>> statsPerTeacher() {
+        List<ArchiveRecord> approved = archiveRecordRepository.findAll((root, query, cb) ->
+                cb.and(cb.equal(root.get("status"), ArchiveStatus.APPROVED), cb.isFalse(root.get("deleted"))));
+        Map<Long, Map<String, Object>> byTeacher = new LinkedHashMap<>();
+        for (ArchiveRecord r : approved) {
+            SystemUser teacher = r.getTeacher();
+            byTeacher.computeIfAbsent(teacher.getId(), id -> {
+                Map<String, Object> row = new LinkedHashMap<>();
+                row.put("teacherNo", teacher.getTeacherNo() == null ? "" : teacher.getTeacherNo());
+                row.put("teacherName", teacher.getRealName());
+                row.put("subjectName", teacher.getSubjectName() == null ? "" : teacher.getSubjectName());
+                row.put("openClassCount", 0L);
+                row.put("paperCount", 0L);
+                row.put("competitionCount", 0L);
+                row.put("researchProjectCount", 0L);
+                return row;
+            });
+            Map<String, Object> row = byTeacher.get(teacher.getId());
+            String key = switch (r.getArchiveType()) {
+                case OPEN_CLASS -> "openClassCount";
+                case PAPER -> "paperCount";
+                case COMPETITION -> "competitionCount";
+                case RESEARCH_PROJECT -> "researchProjectCount";
+            };
+            row.merge(key, 1L, (a, b) -> (Long) a + (Long) b);
+        }
+        return new ArrayList<>(byTeacher.values());
     }
 
     private void applyForm(ArchiveRecord record, ArchiveFormRequest form) {

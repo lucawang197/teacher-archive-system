@@ -1,5 +1,6 @@
 package com.school.teacherarchivesystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.util.List;
 @Table(name = "evaluation_result")
 public class EvaluationResult extends BaseEntity {
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "template_id", nullable = false)
     private EvaluationTemplate template;
@@ -33,7 +35,7 @@ public class EvaluationResult extends BaseEntity {
     @Column(name = "missing_items_json", columnDefinition = "TEXT")
     private String missingItemsJson;
 
-    @OneToMany(mappedBy = "result", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "result", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<EvaluationResultDetail> details = new ArrayList<>();
 
     public EvaluationTemplate getTemplate() { return template; }

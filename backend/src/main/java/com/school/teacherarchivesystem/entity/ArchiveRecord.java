@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "archive_record")
 public class ArchiveRecord extends BaseEntity {
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "teacher_id", nullable = false)
     private SystemUser teacher;
 
@@ -39,7 +39,7 @@ public class ArchiveRecord extends BaseEntity {
     @Column(name = "review_comment", length = 300)
     private String reviewComment;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "review_by")
     private SystemUser reviewBy;
 
@@ -49,7 +49,7 @@ public class ArchiveRecord extends BaseEntity {
     @Column(nullable = false)
     private Boolean deleted = false;
 
-    @OneToMany(mappedBy = "archive", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "archive", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ArchiveAttachment> attachments = new ArrayList<>();
 
     public SystemUser getTeacher() { return teacher; }

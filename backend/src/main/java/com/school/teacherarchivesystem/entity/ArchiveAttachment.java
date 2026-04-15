@@ -1,11 +1,13 @@
 package com.school.teacherarchivesystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "archive_attachment")
 public class ArchiveAttachment extends BaseEntity {
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "archive_id", nullable = false)
     private ArchiveRecord archive;

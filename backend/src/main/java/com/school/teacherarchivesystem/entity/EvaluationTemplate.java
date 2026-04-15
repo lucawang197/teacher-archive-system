@@ -17,7 +17,7 @@ public class EvaluationTemplate extends BaseEntity {
     @Column(nullable = false)
     private Boolean active = false;
 
-    @OneToMany(mappedBy = "template", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "template", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @OrderBy("sortOrder asc")
     private List<EvaluationIndicator> indicators = new ArrayList<>();
 

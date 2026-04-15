@@ -96,7 +96,7 @@ const totalCount = (row) => Number(row.openClassCount || 0) + Number(row.paperCo
 
 const loadRows = async () => {
   if (isAdmin.value) {
-    const res = await http.get('/archives/summary')
+    const res = await http.get('/archives/stats')
     sourceRows.value = res.data || []
   } else {
     const res = await http.get('/archives/mine', { params: { page: 0, size: 100 } })

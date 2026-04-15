@@ -1,8 +1,8 @@
 INSERT INTO sys_user (username, password_hash, role, status, real_name, teacher_no, subject_name, job_title, phone, email, created_at, updated_at)
 VALUES
-('admin', '$2a$10$TYmYFQApjkBNu8A4nP15mOnfR4cXysWi4KFOeFHrgb3R04QLbTjaG', 'ADMIN', 'ENABLED', '系统管理员', 'A0001', '信息中心', '管理员', '13800000000', 'admin@school.local', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('teacher01', '$2a$10$TYmYFQApjkBNu8A4nP15mOnfR4cXysWi4KFOeFHrgb3R04QLbTjaG', 'TEACHER', 'ENABLED', '张老师', 'T0001', '语文', '一级教师', '13800000001', 'teacher01@school.local', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('teacher02', '$2a$10$TYmYFQApjkBNu8A4nP15mOnfR4cXysWi4KFOeFHrgb3R04QLbTjaG', 'TEACHER', 'ENABLED', '李老师', 'T0002', '数学', '高级教师', '13800000002', 'teacher02@school.local', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+('admin', '$2b$10$sxV1x.fyriijZ.9hMzbNfeuAGC28NG7gpbywwPhWaYjn6ebCmCADW', 'ADMIN', 'ENABLED', '系统管理员', 'A0001', '信息中心', '管理员', '13800000000', 'admin@school.local', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('teacher01', '$2b$10$sxV1x.fyriijZ.9hMzbNfeuAGC28NG7gpbywwPhWaYjn6ebCmCADW', 'TEACHER', 'ENABLED', '张老师', 'T0001', '语文', '一级教师', '13800000001', 'teacher01@school.local', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('teacher02', '$2b$10$sxV1x.fyriijZ.9hMzbNfeuAGC28NG7gpbywwPhWaYjn6ebCmCADW', 'TEACHER', 'ENABLED', '李老师', 'T0002', '数学', '高级教师', '13800000002', 'teacher02@school.local', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO evaluation_template (template_name, school_year, subject_name, active, created_at, updated_at)
 VALUES ('默认教师考评模板', '2025-2026', NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO evaluation_indicator (template_id, indicator_code, indicator_name, weight, score_rule_json, sort_order, enabled, created_at, updated_at)

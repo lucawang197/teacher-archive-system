@@ -1,5 +1,6 @@
 package com.school.teacherarchivesystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.school.teacherarchivesystem.enums.UserRole;
 import com.school.teacherarchivesystem.enums.UserStatus;
 import jakarta.persistence.*;
@@ -12,6 +13,7 @@ public class SystemUser extends BaseEntity {
     @Column(nullable = false, unique = true, length = 50)
     private String username;
 
+    @JsonIgnore
     @Column(name = "password_hash", nullable = false, length = 100)
     private String passwordHash;
 

@@ -25,7 +25,7 @@ public class BackupRecord extends BaseEntity {
     @Column(length = 300)
     private String remark;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "created_by")
     private SystemUser createdBy;
 

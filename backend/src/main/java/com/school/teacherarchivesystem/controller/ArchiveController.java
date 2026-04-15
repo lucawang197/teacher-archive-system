@@ -77,4 +77,10 @@ public class ArchiveController {
     public ApiResponse<?> summary() {
         return ApiResponse.ok(archiveService.summary());
     }
+
+    @GetMapping("/stats")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ApiResponse<?> stats() {
+        return ApiResponse.ok(archiveService.statsPerTeacher());
+    }
 }

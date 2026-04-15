@@ -1,11 +1,13 @@
 package com.school.teacherarchivesystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "evaluation_result_detail")
 public class EvaluationResultDetail extends BaseEntity {
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "result_id", nullable = false)
     private EvaluationResult result;

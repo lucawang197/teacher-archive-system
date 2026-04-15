@@ -15,12 +15,21 @@ http.interceptors.request.use((config) => {
 http.interceptors.response.use(
   (response) => {
     const payload = response.data
-    if (payload && typeof payload === 'object' && 'code' in payload) {
-      if (payload.code !== 200) {
-        ElMessage.error(payload.message || '请求失败')
-        return Promise.reject(new Error(payload.message || '请求失败'))
+    if (payload && typeof payload === 'object') {
+      if ('success' in payload) {
+        if (!payload.success) {
+          ElMessage.error(payload.message || '请求失败')
+          return Promise.reject(new Error(payload.message || '请求失败'))
+        }
+        return payload
       }
-      return payload
+      if ('code' in payload) {
+        if (payload.code !== 200) {
+          ElMessage.error(payload.message || '请求失败')
+          return Promise.reject(new Error(payload.message || '请求失败'))
+        }
+        return payload
+      }
     }
     return response
   },

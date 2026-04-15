@@ -19,6 +19,16 @@ public class ExportController {
         this.exportService = exportService;
     }
 
+    @GetMapping("/archives")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<byte[]> exportArchives() {
+        byte[] bytes = exportService.exportArchives();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=teacher_archives_stats.xlsx")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(bytes);
+    }
+
     @GetMapping("/results")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<byte[]> exportResults(@RequestParam(required = false) Long templateId) {
