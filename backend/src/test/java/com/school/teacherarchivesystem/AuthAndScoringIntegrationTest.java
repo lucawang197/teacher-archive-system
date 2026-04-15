@@ -51,7 +51,7 @@ class AuthAndScoringIntegrationTest {
 
     @Test
     void shouldUploadArchiveThenAdminRunScoring() throws Exception {
-        String teacherToken = login("teacher01", "123456");
+        String teacherToken = login("zhang_san", "123456");
         String adminToken = login("admin", "123456");
 
         String formJson = "{\"archiveName\":\"校级公开课\",\"archiveType\":\"OPEN_CLASS\","
