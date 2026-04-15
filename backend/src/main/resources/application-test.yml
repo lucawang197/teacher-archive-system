@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:teacher_archive_system_test;MODE=MySQL;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: none
+  flyway:
+    enabled: true
+app:
+  storage:
+    base-path: ./target/test-uploads
+    backup-path: ./target/test-backups

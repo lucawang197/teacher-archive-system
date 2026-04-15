@@ -1,0 +1,182 @@
+{
+  "info": {
+    "name": "Teacher Archive System API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "教师档案管理考评系统接口联调集合，可直接导入 Postman，也可被 Apifox 导入。"
+  },
+  "item": [
+    {
+      "name": "认证",
+      "item": [
+        {
+          "name": "管理员登录",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "教师登录",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"teacher001\",\n  \"password\": \"Teacher@123\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "档案管理",
+      "item": [
+        {
+          "name": "查询档案列表",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/archives?page=0&size=10"
+          }
+        },
+        {
+          "name": "审核档案",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/archives/1/review",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"approved\": true,\n  \"reviewComment\": \"材料完整，审核通过\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "考评管理",
+      "item": [
+        {
+          "name": "查询模板列表",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/evaluations/templates"
+          }
+        },
+        {
+          "name": "执行自动评分",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/evaluations/run-scoring",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"templateId\": 1,\n  \"schoolYear\": \"2025-2026\",\n  \"term\": \"上学期\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "日志与备份",
+      "item": [
+        {
+          "name": "查询登录日志",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/logs?logType=LOGIN&page=0&size=20"
+          }
+        },
+        {
+          "name": "创建手动备份",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/backups",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"backupName\": \"school-prod-manual-001\",\n  \"remark\": \"版本上线前手动备份\"\n}"
+            }
+          }
+        },
+        {
+          "name": "健康检查",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

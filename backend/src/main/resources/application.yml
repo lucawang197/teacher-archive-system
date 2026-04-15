@@ -1,0 +1,37 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:h2:mem:teacher_archive_system;MODE=MySQL;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+  flyway:
+    enabled: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 250MB
+logging:
+  level:
+    root: INFO
+app:
+  jwt:
+    secret: teacher-archive-system-demo-secret-key-2026
+    expiration-seconds: 7200
+  security:
+    max-failed-login: 5
+    lock-minutes: 60
+  storage:
+    base-path: ./storage/uploads
+    backup-path: ./storage/backups
+  meta:
+    name: teacher-archive-system
+    version: 1.0.0

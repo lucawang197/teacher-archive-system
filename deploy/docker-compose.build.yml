@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: teacher-archive-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root123456
+      MYSQL_DATABASE: teacher_archive_system
+      MYSQL_USER: tas_user
+      MYSQL_PASSWORD: tas_password
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: teacher-archive-backend
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      TZ: Asia/Shanghai
+    depends_on:
+      - mysql
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./data/uploads:/data/uploads
+      - ./data/backups:/data/backups
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: teacher-archive-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - '80:80'

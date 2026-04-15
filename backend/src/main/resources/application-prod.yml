@@ -1,0 +1,34 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://mysql:3306/teacher_archive_system?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai}
+    username: ${DB_USERNAME:teacher_archive}
+    password: ${DB_PASSWORD:change_me}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 250MB
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+logging:
+  level:
+    root: INFO
+    com.school.teacherarchivesystem: INFO
+app:
+  jwt:
+    secret: ${JWT_SECRET:please-change-this-secret-key-in-production}
+    expiration-seconds: ${JWT_EXPIRE_SECONDS:7200}
+  security:
+    max-failed-login: ${MAX_FAILED_LOGIN:5}
+    lock-minutes: ${LOCK_MINUTES:60}
+  storage:
+    base-path: ${APP_UPLOAD_PATH:/data/uploads}
+    backup-path: ${APP_BACKUP_PATH:/data/backups}
